@@ -1,0 +1,18 @@
+1、hand_tracking库dll
+bazel_dll文件存放了封装的类代码
+1）复制"根目录\mediapipe\examples\desktop\hand_tracking"文件夹，并修改为hand_tracking_cpu
+2）增加"根目录\mediapipe\examples\desktop\hand_tracking_cpu\BUILD"编译库模块
+cc_binary(
+    name = "hand_tracking_cpu_dll",
+	srcs = ["hand_tracking_api.h","hand_tracking_api.cpp","hand_tracking_detect.h","hand_tracking_detect.cpp"],
+    linkshared=True,
+        deps = [
+        "//mediapipe/graphs/hand_tracking:desktop_tflite_calculators",
+    ],
+)
+3）将dll_bazel中的"hand_tracking_api.h","hand_tracking_api.cpp","hand_tracking_detect.h","hand_tracking_detect.cpp"文件复制到"根目录\mediapipe\examples\desktop\hand_tracking_cpu"文件夹下
+4）编译：WIndows上只支持CPU
+bazel build -c opt --define MEDIAPIPE_DISABLE_GPU=1 --action_env PYTHON_BIN_PATH="D:\\anaconda3\\envs\\mmd26\python.exe" mediapipe/examples/desktop/hand_tracking_cpu:hand_tracking_cpu_dll --verbose_failures
+5）生成dll文件在"根目录\bazel-bin\mediapipe\examples\desktop\hand_tracking_cpu\hand_tracking_cpu_dll.dll"
+
+2、其他分别参考bazel_dll文件中的模块
