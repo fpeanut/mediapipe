@@ -1,0 +1,56 @@
+1、修改Windows上opencv的路径
+文件路径：根目录/WORKSPACE
+位置：第281行-> path = "D:\\Dlib\\opencv3.4.2\\build"
+修改：更改为本机上opencv的路径
+
+2、修改opencv的版本
+文件路径：根目录/third_party/opencv_windows.BUILD
+位置：第8行 -> OPENCV_VERSION = "342"  # 3.4.10
+修改：更改opencv的版本号
+位置：第27行-第32行
+            "x64/vc15/lib/opencv_world" + OPENCV_VERSION + "_vc15_x64.lib",
+            "x64/vc15/bin/opencv_world" + OPENCV_VERSION + "_vc15_x64.dll",
+        ],
+        ":dbg_build": [
+            "x64/vc15/lib/opencv_world" + OPENCV_VERSION + "d_vc15_x64.lib",
+            "x64/vc15/bin/opencv_world" + OPENCV_VERSION + "d_vc15_x64.dll",
+修改：更改为对于lib和dll的名称
+
+3、修改模型路径，取消原mediapipe固定路径，以HandTracking为例
+1）在根目录下新建文件夹"cjet"
+2）将"根目录/mediapipe/modules/"复制到"根目录/cjet/modules/"，实际只需要tflite和txt文件。
+3）修改"根目录/mediapipe/modules/palm_detection/palm_detection_model_loader.pbtxt"，第27行和第37行，将mediapipe改为cjet。
+改前：string_value: "mediapipe/modules/palm_detection/palm_detection_lite.tflite"
+改后：string_value: "cjet/modules/palm_detection/palm_detection_lite.tflite"
+4）修改"根目录/mediapipe/modules/hand_landmark/hand_landmark_model_loader.pbtxt"，第27行和第37行，将mediapipe改为cjet。
+改前：string_value: "mediapipe/modules/hand_landmark/hand_landmark_lite.tflite"
+改后：string_value: "cjet/modules/hand_landmark/hand_landmark_lite.tflite"
+5）修改"根目录/mediapipe/modules/hand_landmark/hand_landmark_cpu.pbtxt"，第139行，将mediapipe改为cjet。
+改前：label_map_path: "mediapipe/modules/hand_landmark/handedness.txt"
+改后：label_map_path: "cjet/modules/hand_landmark/handedness.txt"
+              
+4、在示例程序代码中增加耗时打印
+1）打开"根目录/mediapipe/examples/desktop/demo_run_graph_main.cc"
+2）在第103行添加：double t1 = (double)cv::getTickCount();//开始计时
+3）在第127行添加：
+	double t2 = (double)cv::getTickCount();//结束计时
+	printf("cost: %f\n",(t2-t1)*1000/cv::getTickFrequency());//打印耗时
+4）重新编译，运行。
+
+5、修改参数值，以hand_tracking为例（必须在编译前修改）
+1）模型路径（见3）
+2）手部框检测的阈值：
+位置：mediapipe\modules\palm_detection\palm_detection_cpu.pbtxt 第119行 min_score_thresh: 0.5
+3）手部框检测的模型：
+位置：mediapipe\modules\palm_detection\palm_detection_model_loader.pbtxt 第21行 select: 1
+4）手部点检测的阈值：
+位置：mediapipe\modules\palm_detection\hand_landmark_cpu.pbtxt 第117行 threshold: 0.5
+5）手部点检测的模型：
+位置：mediapipe\modules\palm_detection\hand_landmark_model_loader.pbtxt  第21行 select: 1
+
+6、修改参数值，以hand_tracking为例（可在编译后修改）
+1）框的数量无法修改，默认检测所有框
+2）手部检测的数量：
+位置：mediapipe\graphs\hand_tracking\hand_tracking_desktop_live.pbtxt 第18行 packet { int_value: 2 }
+
+
