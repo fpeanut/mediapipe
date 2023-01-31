@@ -1,0 +1,10 @@
+/*1）编译、调用示例程序*/
+bazel build -c opt --define MEDIAPIPE_DISABLE_GPU=1  --action_env PYTHON_BIN_PATH="D:\\Anaconda3\\envs\\mmd26\python.exe" mediapipe/examples/desktop/hand_tracking_cpu:hand_tracking_cpu --verbose_failures
+//1-1）调用手掌检测
+bazel-bin\\mediapipe\\examples\\desktop\\hand_tracking_cpu\\hand_tracking_cpu.exe --calculator_graph_config_file=mediapipe\\graphs\\hand_tracking\\hand_detection_desktop_live.pbtxt --input_video_path=test_videos\\1.mp4
+//1-2）调用手部点检测
+bazel-bin\\mediapipe\\examples\\desktop\\hand_tracking_cpu\\hand_tracking_cpu.exe --calculator_graph_config_file=mediapipe\\graphs\\hand_tracking\\hand_tracking_desktop_live.pbtxt --input_video_path=test_videos\\1.mp4
+
+/*2）编译Dll封装库*/
+//2-1）WIndows上只支持CPU
+bazel build -c opt --define MEDIAPIPE_DISABLE_GPU=1 --action_env PYTHON_BIN_PATH="D:\\Anaconda3\\envs\\mmd26\python.exe" mediapipe/examples/desktop/hand_tracking_cpu:hand_tracking_cpu_dll --verbose_failures
