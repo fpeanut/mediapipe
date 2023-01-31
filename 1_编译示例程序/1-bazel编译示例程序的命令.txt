@@ -1,0 +1,44 @@
+1）
+PYTHON_BIN_PATH为系统anaconda虚拟环境下的python路径
+编译时需要在mediapipe根目录下进入cmd，然后输入编译命令
+
+2）hello_world示例
+编译：
+bazel build -c opt --define MEDIAPIPE_DISABLE_GPU=1 --action_env PYTHON_BIN_PATH="D:\\anaconda3\\envs\\mmd26\\python.exe" mediapipe/examples/desktop/hello_world --verbose_failures
+执行：
+set GLOG_logtostderr=1 bazel-bin\mediapipe\examples\desktop\hello_world\hello_world.exe
+
+3）hand_tracking示例
+编译：
+bazel build -c opt --define MEDIAPIPE_DISABLE_GPU=1  --action_env PYTHON_BIN_PATH="D:\\anaconda3\\envs\\mmd26\python.exe" mediapipe/examples/desktop/hand_tracking:hand_tracking_cpu --verbose_failures
+执行手掌检测：
+bazel-bin\\mediapipe\\examples\\desktop\\hand_tracking\\hand_tracking_cpu.exe --calculator_graph_config_file=mediapipe\\graphs\\hand_tracking\\hand_detection_desktop_live.pbtxt
+执行手部点检测：
+bazel-bin\\mediapipe\\examples\\desktop\\hand_tracking\\hand_tracking_cpu.exe --calculator_graph_config_file=mediapipe\\graphs\\hand_tracking\\hand_tracking_desktop_live.pbtxt
+备注：默认读取0相机，如需要读取本地视频，则运行代码添加 --input_video_path=test_videos\\1.mp4
+
+4）face_mesh示例
+编译：
+bazel build -c opt --define MEDIAPIPE_DISABLE_GPU=1  --action_env PYTHON_BIN_PATH="D:\\anaconda3\\envs\\mmd26\python.exe" mediapipe/examples/desktop/face_mesh:face_mesh_cpu --verbose_failures
+执行人脸框检测：
+bazel-bin\\mediapipe\\examples\\desktop\\face_mesh\\face_mesh_cpu.exe --calculator_graph_config_file=mediapipe\\graphs\\face_detection\\face_detection_desktop_live.pbtxt
+执行人脸点检测：
+bazel-bin\\mediapipe\\examples\\desktop\\face_mesh\\face_mesh_cpu.exe --calculator_graph_config_file=mediapipe\\graphs\\face_mesh\\face_mesh_desktop_live.pbtxt
+
+5）holistic_tracking示例
+编译：
+bazel build -c opt --define MEDIAPIPE_DISABLE_GPU=1  --action_env PYTHON_BIN_PATH="D:\\anaconda3\\envs\\mmd26\python.exe" mediapipe/examples/desktop/holistic_tracking:holistic_tracking_cpu --verbose_failures
+执行人脸+手+骨架检测：
+bazel-bin\\mediapipe\\examples\\desktop\\holistic_tracking\\holistic_tracking_cpu.exe --calculator_graph_config_file=mediapipe\\graphs\\holistic_tracking\\holistic_tracking_cpu.pbtxt 
+
+6）iris_tracking示例
+编译：
+bazel build -c opt --define MEDIAPIPE_DISABLE_GPU=1  --action_env PYTHON_BIN_PATH="D:\\anaconda3\\envs\\mmd26\python.exe" mediapipe/examples/desktop/iris_tracking:iris_tracking_cpu --verbose_failures
+执行眼球追踪：
+bazel-bin\\mediapipe\\examples\\desktop\\iris_tracking\\iris_tracking_cpu.exe --calculator_graph_config_file=mediapipe\\graphs\\iris_tracking\\iris_tracking_cpu.pbtxt
+
+7）pose_tracking示例
+编译：
+bazel build -c opt --define MEDIAPIPE_DISABLE_GPU=1  --action_env PYTHON_BIN_PATH="D:\\anaconda3\\envs\\mmd26\python.exe" mediapipe/examples/desktop/pose_tracking:pose_tracking_cpu --verbose_failures
+执行骨架检测：
+bazel-bin\\mediapipe\\examples\\desktop\\pose_tracking\\pose_tracking_cpu.exe --calculator_graph_config_file=mediapipe\\graphs\\pose_tracking\\pose_tracking_cpu.pbtxt
